@@ -1,135 +1,132 @@
-#include<stdio.h>
-#include<conio.h>
-#define MAX 10
-/* Define the required functions to create a list, insert into the list,
-delete an element from the list, search and display the list */
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 20
+
+/* Function prototypes */
 void create();
 void insert();
 void deletion();
 void search();
 void display();
-int a,b[20], n, p, e, f, i, pos;
-void main()
-{
-//clrscr();
-int ch;
-char g='y';
-do
-{
-printf("\n main Menu");
-printf("\n 1.Create \n 2.Delete \n 3.Search \n 4.Insert \n
-5.Display\n 6.Exit \n");
-printf("\n Enter your Choice");
-scanf("%d", &ch);
-/* The following switch will call the appropriate choice provided
-by the user */
-switch(ch)
-{
-case 1:
-create();
-break;
-case 2:
-deletion();
-break;
-case 3:
-search();
-break;
-case 4:
-insert();
-break;
-case 5:
-display();
-break;
-case 6:
-exit();
-break;
-default:
-printf(" \n Enter the correct choice:");
+
+int b[MAX];  // Array to hold list elements
+int n, p, e, i, pos;  // Global variables for operations on the list
+
+int main() {
+    int ch;
+    char g = 'y';
+
+    do {
+        printf("\nMain Menu");
+        printf("\n1. Create\n2. Delete\n3. Search\n4. Insert\n5. Display\n6. Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &ch);
+
+        switch(ch) {
+            case 1:
+                create();
+                break;
+            case 2:
+                deletion();
+                break;
+            case 3:
+                search();
+                break;
+            case 4:
+                insert();
+                break;
+            case 5:
+                display();
+                break;
+            case 6:
+                exit(0);
+                break;
+            default:
+                printf("\nEnter the correct choice!\n");
+        }
+
+        printf("\nDo you want to continue? (y/n): ");
+        scanf(" %c", &g);
+    } while(g == 'y' || g == 'Y');
+
+    return 0;
 }
-printf("\n Do u want to continue:::");
-scanf("\n%c", &g);
+
+void create() {
+    printf("\nEnter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("\nEnter %d elements:\n", n);
+    for(i = 0; i < n; i++) {
+        printf("Element %d: ", i + 1);
+        scanf("%d", &b[i]);
+    }
 }
-/* The program is intended to run till we provide inputs other that ‘y’
-or ‘Y’ */
-while(g=='y'||g=='Y');
-getch();
+
+void deletion() {
+    printf("\nEnter the position to delete: ");
+    scanf("%d", &pos);
+
+    if(pos >= n || pos < 0) {
+        printf("\nInvalid Location!\n");
+        return;
+    }
+
+    for(i = pos; i < n - 1; i++) {
+        b[i] = b[i + 1];
+    }
+    n--;
+
+    printf("\nThe elements after deletion:\n");
+    display();
 }
-void create()
-{
-printf("\n Enter the number of nodes");
-scanf("%d", &n);
-/* The loop should run till we get the ‘n’ inputs */
-for(i=0;i<n;i++) {
-{
-printf("\n Enter the Element:",i+1);
-scanf("%d", &b[i]);
+
+void search() {
+    printf("\nEnter the element to search: ");
+    scanf("%d", &e);
+
+    for(i = 0; i < n; i++) {
+        if(b[i] == e) {
+            printf("\nElement %d found at position %d.\n", e, i + 1);
+            return;
+        }
+    }
+    
+    printf("\nElement %d not found in the list.\n", e);
 }
+
+void insert() {
+    printf("\nEnter the position to insert: ");
+    scanf("%d", &pos);
+
+    if(pos > n || pos < 0) {
+        printf("\nInvalid Location!\n");
+        return;
+    }
+
+    printf("Enter the element to insert: ");
+    scanf("%d", &p);
+
+    for(i = n - 1; i >= pos; i--) {
+        b[i + 1] = b[i];
+    }
+    b[pos] = p;
+    n++;
+
+    printf("\nThe list after insertion:\n");
+    display();
 }
-void deletion()
-{
-printf("\n Enter the position u want to delete::");
-scanf("%d", &pos);
-if(pos>=n)
-{
-printf("\n Invalid Location::");
-}
-else
-{
-for(i=pos+1;i<n;i++)
-{
-b[i-1]=b[i];
-}n--;
-}
-printf("\n The Elements after deletion");
-for(i=0;i<n;i++)
-{
-printf("\t%d", b[i]);
-}
-}
-void search()
-{
-printf("\n Enter the Element to be searched:");
-scanf("%d", &e);
-for(i=0;i<n;i++)
-{
-if(b[i]==e)
-{
-printf("Value is in the %d Position", i);
-}
-else
-{
-printf("Value %d is not in the list::", e);
-continue;
-}
-}
-}
-void insert()
-{
-printf("\n Enter the position u need to insert::");
-scanf("%d", &pos);
-if(pos>=n)
-{
-printf("\n invalid Location::");
-}
-else
-{
-for(i=MAX-1;i>=pos-1;i--)
-{
-b[i+1]=b[i];
-}
-printf("\n Enter the element to insert::\n");
-scanf("%d",&p);
-b[pos]=p;
-n++;
-}
-printf("\n The list after insertion::\n");
-display();
-}
-void display()
-{
-printf("\n The Elements of The list ADT are:");
-for(i=0;i<n;i++)
-{
-printf("\n\n%d", b[i]);
-}
+
+void display() {
+    if(n == 0) {
+        printf("\nThe list is empty.\n");
+        return;
+    }
+
+    printf("\nThe elements in the list are:\n");
+    for(i = 0; i < n; i++) {
+        printf("%d ", b[i]);
+    }
+    printf("\n");
 }
